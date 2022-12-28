@@ -6,10 +6,13 @@ import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./UserResolver";
+import { AppDataSource } from "./data-source";
 
 (async () => {
   const app = express();
   app.get("/", (_req, res) => res.send("hello"));
+
+  AppDataSource.initialize();
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
