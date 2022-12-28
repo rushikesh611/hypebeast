@@ -8,6 +8,9 @@ import { buildSchema } from "type-graphql";
 import { UserResolver } from "./UserResolver";
 import { AppDataSource } from "./data-source";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 (async () => {
   const app = express();
   app.get("/", (_req, res) => res.send("hello"));
@@ -25,7 +28,9 @@ import { AppDataSource } from "./data-source";
     "/graphql",
     cors<cors.CorsRequest>(),
     json(),
-    expressMiddleware(apolloServer)
+    expressMiddleware(apolloServer, {
+      context: async ({ req, res }) => ({ req, res }),
+    })
   );
 
   app.listen(4000, () => {
