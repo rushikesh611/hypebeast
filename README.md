@@ -1,4 +1,4 @@
-Hypebeast Tech Stack
+Hypebeast Tech Stack Boilerplate
 
 - Node
 - Express

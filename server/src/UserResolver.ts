@@ -12,6 +12,7 @@ import { MyContext } from "./MyContext";
 import { createAccessToken, createRefreshToken } from "./auth";
 import { User } from "./entity/User";
 import { isAuth } from "./isAuth";
+import { sendRefreshToken } from "./sendRefreshToken";
 const bcrypt = require("bcrypt");
 
 @ObjectType()
@@ -58,9 +59,7 @@ export class UserResolver {
 
     // login successful
 
-    res.cookie("jid", createRefreshToken(user), {
-      httpOnly: true,
-    });
+    sendRefreshToken(res, createRefreshToken(user));
 
     return {
       accessToken: createAccessToken(user),
