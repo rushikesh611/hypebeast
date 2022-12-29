@@ -2,6 +2,7 @@ import {
   Arg,
   Ctx,
   Field,
+  Int,
   Mutation,
   ObjectType,
   Query,
@@ -13,6 +14,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
 import { User } from "./entity/User";
 import { isAuth } from "./isAuth";
 import { sendRefreshToken } from "./sendRefreshToken";
+import { AppDataSource } from "./data-source";
 const bcrypt = require("bcrypt");
 
 @ObjectType()
@@ -39,6 +41,17 @@ export class UserResolver {
     return User.find();
   }
 
+  @Mutation(() => Boolean)
+  async revokeRefreshTokenForUser(@Arg("userId", () => Int) userId: number) {
+    await AppDataSource.getRepository(User).increment(
+      { id: userId },
+      "tokenVersion",
+      1
+    );
+
+    return true;
+  }
+
   @Mutation(() => LoginResponse)
   async login(
     @Arg("email") email: string,
@@ -58,7 +71,6 @@ export class UserResolver {
     }
 
     // login successful
-
     sendRefreshToken(res, createRefreshToken(user));
 
     return {
