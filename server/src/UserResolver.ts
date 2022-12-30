@@ -83,6 +83,11 @@ export class UserResolver {
     @Arg("email") email: string,
     @Arg("password") password: string
   ) {
+    const existingUserEmail = await User.findOne({ where: { email } });
+    if (email == existingUserEmail?.email) {
+      return false;
+    }
+
     const hashedPassword = await bcrypt.hash(password, 12);
     try {
       await User.insert({

@@ -1,18 +1,30 @@
 import type { NextPage } from "next";
-import { useHelloQuery } from "../generated/graphql";
 import { Header } from "../components/Header";
+import { useUsersQuery } from "../generated/graphql";
 
 const Home: NextPage = () => {
-  const { data, loading } = useHelloQuery();
+  const { data } = useUsersQuery({ fetchPolicy: "network-only" });
 
-  if (loading || !data) {
+  if (!data) {
     return <div>loading...</div>;
   }
 
   return (
     <div>
       <Header />
-      <h1 className="text-lg">{data.hello}</h1>
+
+      <div>
+        <div>Users:</div>
+        <ul>
+          {data.users.map((x) => {
+            return (
+              <li key={x.id}>
+                {x.email} {x.id}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };
