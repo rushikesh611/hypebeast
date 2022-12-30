@@ -1,22 +1,18 @@
-import { gql } from "@apollo/client/core";
-import { useQuery } from "@apollo/client/react";
-
 import type { NextPage } from "next";
+import { useHelloQuery } from "../generated/graphql";
+import { Header } from "../components/Header";
 
 const Home: NextPage = () => {
-  const { data, loading } = useQuery(gql`
-    {
-      hello
-    }
-  `);
+  const { data, loading } = useHelloQuery();
 
-  if (loading) {
+  if (loading || !data) {
     return <div>loading...</div>;
   }
 
   return (
     <div>
-      <h1 className="text-lg">{JSON.stringify(data)}</h1>
+      <Header />
+      <h1 className="text-lg">{data.hello}</h1>
     </div>
   );
 };
