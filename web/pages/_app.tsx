@@ -1,20 +1,17 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
-import type { AppProps } from "next/app";
+import App from "next/app";
+import { withApollo } from "../lib/apollo";
 import "../styles/globals.css";
 
-const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
-  cache: new InMemoryCache(),
-  credentials: "include",
-});
-
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
-  );
+class MyApp extends App<any> {
+  render() {
+    const { Component, pageProps, apolloClient } = this.props;
+    return (
+      <ApolloProvider client={apolloClient}>
+        <Component {...pageProps} />
+      </ApolloProvider>
+    );
+  }
 }
 
-export default MyApp;
+export default withApollo(MyApp);

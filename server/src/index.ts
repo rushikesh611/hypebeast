@@ -65,6 +65,7 @@ dotenv.config();
     "/graphql",
     cors<cors.CorsRequest>({
       origin: "http://localhost:3000",
+
       credentials: true,
     }),
     json(),
