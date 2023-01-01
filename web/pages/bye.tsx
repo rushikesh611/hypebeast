@@ -5,9 +5,7 @@ import Layout from "../components/Layout";
 interface byeProps {}
 
 const Bye: React.FC<byeProps> = ({}) => {
-  const { data, error, loading } = useByeQuery({
-    fetchPolicy: "network-only",
-  });
+  const { data, loading, error } = useByeQuery();
 
   if (loading) {
     return (
